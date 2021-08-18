@@ -13,12 +13,12 @@ int main()
 
 // 1 case of 3, a = 0
 
-    if (a == 0 && b == 0 && c == 0)
+    if (a == 0 && b == 0 && c == 0){
         printf("Many solutions");
-
-    if (a == 0 && b == 0 && c != 0)
+    }
+    if (a == 0 && b == 0 && c != 0){
         printf("No solution");
-
+    }
     if (a == 0 && b != 0) {
         x1 = -c / b;
         printf("x=%.2f", x1);
@@ -27,9 +27,9 @@ int main()
 
     float D = b*b - 4*a*c;
 
-    if (a != 0 && D < 0)
+    if (a != 0 && D < 0){
         printf("No solution");
-
+    }
 // 3 case of 3, a!=0 D>=0
 
     if (a != 0 && D >= 0){
