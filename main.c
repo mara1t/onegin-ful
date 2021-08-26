@@ -1,12 +1,11 @@
 #include <stdio.h>
 
-float two_sol();
+int find_sol(double a, double b, double c, double *x1, double *x2);
 
-float one_sol();
 
 int main()
 {
-    float a = 0, b = 0, c = 0, x1 = 0, x2 = 0, x = 0;
+    float a = 0, b = 0, c = 0, x1 = 2, x2 = 0, x = 0;
 
     float D = b * b - 4 * a * c;
 
@@ -18,46 +17,48 @@ int main()
     printf("c:");
     scanf("%f", &c);
 
-// 1 case of 3, a = 0
-    if (a == 0){
-        if (b == 0 && c == 0){
-            printf("Many solutions");
-        }
-        if (b == 0 && c != 0){
-            printf("No solution");
-        }
-        if (b != 0){
-            one_sol();
-            printf("x=%.2f", x);
-        }
-    }
-// 2 case of 3, D<0, a!=0
-    if(a != 0){
-        if (D < 0){
-            printf("No solution");
-        }
-// 3 case of 3, a!=0 D>=0
+    switch(find_sol(a, b, c, &x1, &x2))
+    {
+    case 0: printf("No solution\n");
+            break;
+    case 1: printf("x=%g\n", x1);
+            break;
+    case 2: printf("x1=%g\nx2=%g\n", x1, x2);
+            break;
+    case 3: printf("many solution\n");
 
-        if (D >= 0){
-            two_sol();
-            printf("x1=%.2f\nx2=%.2f", x1, x2);
-        }
     }
     return 0;
 }
 
-float two_sol()
+int find_sol(double a, double b, double c, double *x1, double *x2)
 {
-    float  x1 = 0, x2 = 0, D;
-    float a, b, c;
-    x1 = ( -b + sqrt(D) ) / (2*a);
-    x2 = ( -b - sqrt(D) ) / (2*a);
+    double D = b*b - 4*a*c;
+    if(a==0){
+        if(b==0){
+            if(c==0){
+                return 3;
+            }
+            else{
+                return 0;
+            }
+        }
+        else{
+            *x1=-c/b;
+            return 1;
+        }
+    }
+    else if(D == 0){
+        *x1=-b/(2*a);
+        return 1;
+    }
+    else if(D != 0){
+
+    *x1 = ( -b + sqrt(D) ) / (2*a);
+    *x2 = ( -b - sqrt(D) ) / (2*a);
+    return 2;
+    }
 }
 
-float one_sol()
-{
-    float D, x = 0;
-    float b, c;
-    x=-c / b;
-}
+
 
