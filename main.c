@@ -22,33 +22,9 @@ int main()
 
     inputs (&a, &b, &c);
 
+    output_roots(a, b, c, &x1, &x2);
 
-    int num_of_roots = find_roots (a, b, c, &x1, &x2);
-
-    // output_roots
-    switch (num_of_roots)
-    {
-    case ZERO_ROOTS:
-        printf("No solution\n");
-        break;
-
-    case ONE_ROOT:
-        printf("x = %lg\n", x1);
-        break;
-
-    case TWO_ROOTS:
-        printf("x1 = %lg\n"
-               "x2 = %lg\n", x1, x2);
-        break;
-
-    case INF_ROOTS:
-        printf("many solution\n");
-        break;
-
-    default:
-        break;
-    }
-
+    printf("%lg%lg%lg", a, b, c);
     return 0;
 }
 
