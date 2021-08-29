@@ -110,12 +110,12 @@ int output_roots(double a, double b, double c, double* x1, double* x2)
         break;
 
     case ONE_ROOT:
-        printf("x = %lg\n", x1);
+        printf("x = %lg\n", *x1);
         break;
 
     case TWO_ROOTS:
         printf("x1 = %lg\n"
-               "x2 = %lg\n", x1, x2);
+               "x2 = %lg\n", *x1, *x2);
         break;
 
     case INF_ROOTS:
