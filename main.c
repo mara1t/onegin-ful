@@ -5,6 +5,7 @@ int inputs (double *a, double *b, double *c); //  input_....
 double discriminant(double a, double b, double c); // ....
 int more_than_0(double a);
 int solve_linear(double k, double b, double* x1);
+int output_roots(double a, double b, double c, double* x1, double* x2);
 // enum + ONE_ROOT + TWO_ROOT
 const double epsilon = 1e-6;
 
@@ -120,4 +121,32 @@ int more_than_0(double a)
         return 0;
     else
         return 1;
+}
+int output_roots(double a, double b, double c, double* x1, double* x2)
+{
+    int num_of_roots = find_roots (a, b, c, x1, x2);
+
+    // output_roots
+    switch (num_of_roots)
+    {
+    case ZERO_ROOTS:
+        printf("No solution\n");
+        break;
+
+    case ONE_ROOT:
+        printf("x = %lg\n", x1);
+        break;
+
+    case TWO_ROOTS:
+        printf("x1 = %lg\n"
+               "x2 = %lg\n", x1, x2);
+        break;
+
+    case INF_ROOTS:
+        printf("many solution\n");
+        break;
+
+    default:
+        break;
+    }
 }
