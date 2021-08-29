@@ -6,25 +6,28 @@ double discriminant(double a, double b, double c); // ....
 int more_than_0(double a);
 int solve_linear(double k, double b, double* x1);
 int output_roots(double a, double b, double c, double* x1, double* x2);
+int test_project ();
 // enum + ONE_ROOT + TWO_ROOT
 const double epsilon = 1e-6;
 
-enum roots{
-ZERO_ROOTS,
-ONE_ROOT,
-TWO_ROOTS,
-INF_ROOTS
+enum roots
+{
+    ZERO_ROOTS,
+    ONE_ROOT,
+    TWO_ROOTS,
+    INF_ROOTS
 };
 
 int main()
 {
-    double a = 0, b = 2, c = 2, x1 = 2, x2 = 2;
+    /* double a = 0, b = 2, c = 2, x1 = 2, x2 = 2;
 
     inputs (&a, &b, &c);
 
     output_roots(a, b, c, &x1, &x2);
 
-    printf("%lg%lg%lg", a, b, c);
+    printf("%lg%lg%lg", a, b, c); */
+    test_project ();
     return 0;
 }
 
@@ -62,7 +65,7 @@ int find_roots (double a, double b, double c, double* x1, double* x2)
     }
 }
 
-int inputs (double* a, double* b,double* c)
+int inputs (double* a, double* b, double* c)
 {
     printf("Enter coefficient a b c from your equation ax^2+bx+c=0\n"
            "a:");
@@ -79,7 +82,7 @@ double discriminant (double a, double b, double c)
 {
     return b*b - 4*a*c;
 }
-int solve_linear(double k, double b, double* x1) // kx+b=0
+int solve_linear (double k, double b, double* x1) // kx+b=0
 {
     if (!more_than_0(k) && !more_than_0(b))
         return INF_ROOTS;
@@ -91,14 +94,14 @@ int solve_linear(double k, double b, double* x1) // kx+b=0
         return ONE_ROOT;
     }
 }
-int more_than_0(double a)
+int more_than_0 (double a)
 {
     if (fabs(a) <= epsilon)
         return 0;
     else
         return 1;
 }
-int output_roots(double a, double b, double c, double* x1, double* x2)
+int output_roots (double a, double b, double c, double* x1, double* x2)
 {
     int num_of_roots = find_roots (a, b, c, x1, x2);
 
@@ -126,3 +129,16 @@ int output_roots(double a, double b, double c, double* x1, double* x2)
         break;
     }
 }
+int test_project ()
+{
+    double x1 = 0, x2 = 0;
+    int ERRORS = 0;
+    ERRORS += (find_roots (0, 0, 0,  &x1, &x2) != INF_ROOTS)? 1 : 0;
+    ERRORS += (find_roots (1, 2, 1,  &x1, &x2) != ONE_ROOT || (x1 != -1))? 1 : 0;
+    ERRORS += (find_roots (0, 0, 1,  &x1, &x2) != ZERO_ROOTS )? 1:0;
+    ERRORS += (find_roots (1, 5, 4,  &x1, &x2) != TWO_ROOTS || ( (x1 != -4 && x2 != -1) && (x2 != -4 && x1 != -1) ) )? 1 : 0;
+    ERRORS += (find_roots (1, 3, 2,  &x1, &x2) != TWO_ROOTS || ( (x1 != -1 && x2 != -2) && (x2 != -1 && x1 != -2) ) )? 1 : 0;
+    printf("%d", ERRORS);
+    return 0;
+}
+
