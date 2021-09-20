@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 int find_roots (double a, double b, double c, double *x1, double *x2);
 int inputs (double *a, double *b, double *c);
 double discriminant(double a, double b, double c);
@@ -9,14 +8,22 @@ int solve_linear(double k, double b, double* x1);
 int output_roots(double a, double b, double c, double* x1, double* x2);
 int test_project ();
 int check_input (double* a);
-const double epsilon = 1e-6;
 
+const double epsilon = 1e-6;/// константа для сранения вводимых чисел с нулем
+
+struct uravn{
+    double a,b,c;
+};
+
+/**
+объявление переменных для кол-ва решений уравнения
+ */
 enum roots
 {
-    ZERO_ROOTS = 0,
-    ONE_ROOT   = 1,
-    TWO_ROOTS  = 2,
-    INF_ROOTS  = 3
+    ZERO_ROOTS = 0,/// 0 решений
+    ONE_ROOT   = 1,/// 1 решение
+    TWO_ROOTS  = 2,/// 2 решения
+    INF_ROOTS  = 3 /// бесконечное кол-во решений
 };
 
 int main()
@@ -37,6 +44,10 @@ int main()
     return 0;
 }
 
+/**
+find_roots() предназначен для нахождения решений для известных коэффициентов a,b,c
+используются доп функции
+*/
 int find_roots (double a, double b, double c, double* x1, double* x2)
 {
 
@@ -74,6 +85,9 @@ int find_roots (double a, double b, double c, double* x1, double* x2)
     }
 }
 
+/**
+функция inputs() печатает фразы, для пояснения функций кода и косвенно считывает коэф a, b, c
+*/
 int inputs (double* a, double* b, double* c)
 {
     printf("Enter coefficient a b c from your equation ax^2+bx+c=0\n"
@@ -85,6 +99,10 @@ int inputs (double* a, double* b, double* c)
     check_input (c);
     return 0;
 }
+
+/**
+проверка считываемых коэф. чтобы ввести числа, а не символы или строки
+*/
 int check_input (double* a)
 {
    while (scanf("%lg", a) == 0)
@@ -96,10 +114,17 @@ int check_input (double* a)
    }
    return 0;
 }
+
+/**
+вычисление дискриминанта
+*/
 double discriminant (double a, double b, double c)
 {
     return b*b - 4*a*c;
 }
+/**
+решение линейного уравнения kx+b=0
+*/
 int solve_linear (double k, double b, double* x1)
 {
     if (!more_than_0(k))
@@ -115,6 +140,10 @@ int solve_linear (double k, double b, double* x1)
         return ONE_ROOT;
     }
 }
+
+/**
+сравнение с нулем
+*/
 int more_than_0 (double a)
 {
     if (fabs(a) <= epsilon)
@@ -122,6 +151,11 @@ int more_than_0 (double a)
     else
         return 1;
 }
+
+/**
+печать корней уравнения(если таковы имеются)
+в зависимости от числа корней
+*/
 int output_roots (double a, double b, double c, double* x1, double* x2)
 {
     int num_of_roots = find_roots (a, b, c, x1, x2);
@@ -150,6 +184,11 @@ int output_roots (double a, double b, double c, double* x1, double* x2)
         break;
     }
 }
+
+/**
+тестирование функции решения уравнения и
+печать кол-ва ошибок
+*/
 int test_project ()
 {
     double x1 = 0, x2 = 0;
