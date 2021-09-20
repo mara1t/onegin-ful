@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-#define NDEBUG_MODE
 
 int find_roots (double a, double b, double c, double *x1, double *x2);
 int inputs (double *a, double *b, double *c);
@@ -22,9 +21,9 @@ enum roots
 
 int main()
 {
-    #ifndef NDEBUG_MODE
+
     test_project();
-    #else
+
 
 
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
@@ -33,7 +32,7 @@ int main()
     // вернуть функцию квадратки
     output_roots(a, b, c, &x1, &x2);
 
-    #endif
+
 
     return 0;
 }
@@ -79,12 +78,6 @@ int inputs (double* a, double* b, double* c)
 {
     printf("Enter coefficient a b c from your equation ax^2+bx+c=0\n"
            "a:");
-    // проверка scanf
-   /* scanf("%lg", a)
-    printf("b:");
-    scanf("%lg", b);
-    printf("c:");
-    scanf("%lg", c);*/
     check_input (a);
     printf("b:");
     check_input (b);
@@ -94,10 +87,12 @@ int inputs (double* a, double* b, double* c)
 }
 int check_input (double* a)
 {
-   if (scanf("%lg", a) == 0)
+   while (scanf("%lg", a) == 0)
    {
-       printf("pls enter right number");
-       abort();
+       printf("pls enter right number\n");
+       while ( getchar() != '\n')
+        {;}
+       printf(":");
    }
    return 0;
 }
@@ -105,19 +100,21 @@ double discriminant (double a, double b, double c)
 {
     return b*b - 4*a*c;
 }
-int solve_linear (double k, double b, double* x1) // kx+b=0
-{   // разбей условия
-    if (!more_than_0(k) && !more_than_0(b))
-        return INF_ROOTS;
-    if (!more_than_0(k) && more_than_0(b))
-        return ZERO_ROOTS;
+int solve_linear (double k, double b, double* x1)
+{
+    if (!more_than_0(k))
+    {
+        if (!more_than_0(b))
+            return INF_ROOTS;
+        else
+            return ZERO_ROOTS;
+    }
     else
     {
         *x1 = -b / k;
         return ONE_ROOT;
     }
 }
-// rename
 int more_than_0 (double a)
 {
     if (fabs(a) <= epsilon)
@@ -129,7 +126,6 @@ int output_roots (double a, double b, double c, double* x1, double* x2)
 {
     int num_of_roots = find_roots (a, b, c, x1, x2);
 
-    // output_roots
     switch (num_of_roots)
     {
     case ZERO_ROOTS:
@@ -166,4 +162,3 @@ int test_project ()
     printf("%d ERRORS\n", ERRORS);
     return 0;
 }
-
