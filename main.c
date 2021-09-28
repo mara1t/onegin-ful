@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 
 int find_roots (double a, double b, double c, double *x1, double *x2);
@@ -9,45 +10,37 @@ int output_roots(double a, double b, double c, double* x1, double* x2);
 int test_project ();
 int check_input (double* a);
 
+/**< const for comparing with 0  */
 const double epsilon = 1e-6;/// константа для сранения вводимых чисел с нулем
 
-struct uravn{
-    double a,b,c;
-};
-
-/**
-объявление переменных для кол-ва решений уравнения
- */
+/**< enum is needed to denote the numbers as number of roots */
 enum roots
 {
-    ZERO_ROOTS = 0,/// 0 решений
-    ONE_ROOT   = 1,/// 1 решение
-    TWO_ROOTS  = 2,/// 2 решения
-    INF_ROOTS  = 3 /// бесконечное кол-во решений
+    ZERO_ROOTS = 0,
+    ONE_ROOT   = 1,
+    TWO_ROOTS  = 2,
+    INF_ROOTS  = 3
 };
 
 int main()
 {
-
     test_project();
-
-
 
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
 
     inputs (&a, &b, &c);
-    // вернуть функцию квадратки
+
     output_roots(a, b, c, &x1, &x2);
-
-
 
     return 0;
 }
-
-/**
-find_roots() предназначен для нахождения решений для известных коэффициентов a,b,c
-используются доп функции
-*/
+/** \brief find_roots() is needed to find roots from giving parameters
+ *
+ * \param 'a' 'b' 'c' param. form equation 'ax^2+bx+c=0'
+ * \param x1 and x2 solutions of equation if they exist
+ * \return returns number of roots
+ *
+ */
 int find_roots (double a, double b, double c, double* x1, double* x2)
 {
 
@@ -69,7 +62,6 @@ int find_roots (double a, double b, double c, double* x1, double* x2)
     }
     else if (Discr > 0)
     {
-        //  до подсчёта дискриминанта
         if (!more_than_0(c))
         {
             *x2 = 0;
@@ -84,10 +76,13 @@ int find_roots (double a, double b, double c, double* x1, double* x2)
         }
     }
 }
-
-/**
-функция inputs() печатает фразы, для пояснения функций кода и косвенно считывает коэф a, b, c
-*/
+/** \brief inputs() writing words for undestanding function of programm
+ *
+ * \param a b c param. of equation to count from console
+ * \param
+ * \return 0 anyway
+ *
+ */
 int inputs (double* a, double* b, double* c)
 {
     printf("Enter coefficient a b c from your equation ax^2+bx+c=0\n"
@@ -99,32 +94,43 @@ int inputs (double* a, double* b, double* c)
     check_input (c);
     return 0;
 }
-
-/**
-проверка считываемых коэф. чтобы ввести числа, а не символы или строки
-*/
+/** \brief checking param. counting from console not to write a letter or symbols instead of number
+ *
+ * \param a param. is coefficient from equation
+ * \param
+ * \return 0 anyway
+ *
+ */
 int check_input (double* a)
 {
    while (scanf("%lg", a) == 0)
    {
        printf("pls enter right number\n");
        while ( getchar() != '\n')
-        {;}
+      {;}
        printf(":");
    }
    return 0;
 }
-
-/**
-вычисление дискриминанта
-*/
+/** \brief counting discriminant while solving equation
+ *
+ * \param a b c from equation
+ * \param
+ * \return meaning of discriminant
+ *
+ */
 double discriminant (double a, double b, double c)
 {
     return b*b - 4*a*c;
 }
-/**
-решение линейного уравнения kx+b=0
-*/
+
+/** \brief solving linear equation kx+b=0
+ *
+ * \param k b from new equation
+ * \param x1 is solution of this equation
+ * \return number of roots in this equation
+ *
+ */
 int solve_linear (double k, double b, double* x1)
 {
     if (!more_than_0(k))
@@ -141,9 +147,13 @@ int solve_linear (double k, double b, double* x1)
     }
 }
 
-/**
-сравнение с нулем
-*/
+/** \brief comparing with 0
+ *
+ * \param a is param which we are comparing
+ * \param
+ * \return 0 if a equal to 0, else 1
+ *
+ */
 int more_than_0 (double a)
 {
     if (fabs(a) <= epsilon)
@@ -152,10 +162,13 @@ int more_than_0 (double a)
         return 1;
 }
 
-/**
-печать корней уравнения(если таковы имеются)
-в зависимости от числа корней
-*/
+/** \brief printing solutions of equation
+ *
+ * \param a b c to find roots
+ * \param x1 x2 are wrote on console
+ * \return 0
+ *
+ */
 int output_roots (double a, double b, double c, double* x1, double* x2)
 {
     int num_of_roots = find_roots (a, b, c, x1, x2);
@@ -180,15 +193,19 @@ int output_roots (double a, double b, double c, double* x1, double* x2)
         break;
 
     default:
-        // ERROR
+
         break;
     }
+    return 0;
 }
 
-/**
-тестирование функции решения уравнения и
-печать кол-ва ошибок
-*/
+/** \brief testing our project to find out errors
+ *
+ * \param -
+ * \param -
+ * \return number of errors
+ *
+ */
 int test_project ()
 {
     double x1 = 0, x2 = 0;
