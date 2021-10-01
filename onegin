@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int fl_size (FILE* og);
+int min (int a, int b);
+int max (int a, int b);
+
+int main()
+{
+
+
+    int begin_str[7000] = {0};
+    int* number[7000] = {0};
+    int a, b, c;
+    int j = 1, i = 0;
+    int file_end=0;
+    int t = j, l = 0;
+    FILE* og = fopen("C:\\Users\\User\\Desktop\\проги\\textin.txt", "r");
+
+    file_end = fl_size(og);
+
+    char* chr_onegin = (char *) calloc(file_end, sizeof(char));
+
+    for (;i != file_end; i++)
+     {
+         fscanf(og, "%c", &chr_onegin[i]);
+         if (chr_onegin[i] == '\n')
+         {
+             begin_str[j] = i+1;
+             number[j] = &chr_onegin[i+1];
+             j++;
+         }
+     }
+    for(int i=0; i <= file_end-1; i++) // bubble sort
+    {
+        for(int j = 0; j < t - i; j++)
+        {
+            int len = 0;
+
+            while ( len <= min(begin_str[i+1]-begin_str[i], begin_str[i+2]-begin_str[i+1]))
+            {
+                if ( chr_onegin[begin_str[j]+len] > chr_onegin[begin_str[j+1]+len])
+                {
+                    swap(&begin_str[j], &begin_str[j+1]);
+                    break;
+
+                }
+                else if (chr_onegin[begin_str[j]+len] < chr_onegin[begin_str[j+1]+len])
+                {
+                    break;
+                }
+                len++;
+            }
+        }
+    }
+   for(int i = 0; i<=1000; i++) // вывод отсортированных строк
+    {
+        for (int j = 0; j <= begin_str[i+1]-begin_str[i]; j++)
+        {
+            printf("%c", chr_onegin[begin_str[i]+j]);
+        }
+    }
+     printf("%ld\n", file_end);
+     fclose(og);
+     return 0;
+}
+int fl_size (FILE* og)
+{
+     if (og == NULL)
+    {
+        printf ("ERROR");
+        return -1;
+    }
+    fseek (og, 0, SEEK_END);
+
+    int size = ftell (og);
+
+    fseek (og, 0, SEEK_SET);
+
+    return (size);
+}
+
+int min(int a, int b)
+{
+    return (a>b)? b:a;
+}
+
+int max(int a, int b)
+{
+    return (a>b)? a:b;
+}
+int swap(int* a, int* b)
+{
+    int t = *a;
+    *a = *b;
+    *b = t;
+    return 0;
+}
