@@ -161,19 +161,10 @@ int max (int a, int b)
 int compare (const char** psymbols1, const char** psymbols2)
 {
     int elm_str = 0, counter = 0;
-            while (1)
+            while (*((*psymbols1) + elm_str) == *((*psymbols2) + elm_str))
             {
-                if ( *( (*psymbols1) + elm_str) > *( (*psymbols1) + elm_str)) // TODO: Все говно пререписывай.
-                {
-                    counter = 1;
-                    break;
-                }
-                else if ( *( (*psymbols1) + elm_str) < *( (*psymbols1) + elm_str))
-                {
-                    counter = -1;
-                    break;
-                }
                 elm_str++;
             }
-    return (counter);
+    return *((*psymbols1) + elm_str) - *((*psymbols2) + elm_str);
 }
+
