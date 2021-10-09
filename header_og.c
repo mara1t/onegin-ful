@@ -147,34 +147,34 @@ int compare_begin (struct Line *maratcool1, struct Line *maratcool2)
 {
     int elm_str_one = 0, elm_str_two = 0;
 
-    while (!isalpha(*( (maratcool1->str) + elm_str_one)) && (maratcool1->len) > elm_str_one)
+    while (!isalpha(*( (maratcool1->str) + elm_str_one)) && ((maratcool1->len) > elm_str_one))
     {
         elm_str_one++;
     }
-    while (!isalpha(*( (maratcool2->str) + elm_str_two)) && (maratcool2->len) > elm_str_two)
+    while (!isalpha(*( (maratcool2->str) + elm_str_two)) && ((maratcool2->len) > elm_str_two))
     {
         elm_str_two++;
     }
-    if (elm_str_one >= (maratcool1->len) || elm_str_two >= (maratcool2->len))
+    if ((elm_str_one >= (maratcool1->len)) || (elm_str_two >= (maratcool2->len)))
     {
-        return -(elm_str_one >= (maratcool1->len) - elm_str_two >= (maratcool2->len));
+        return -((elm_str_one >= (maratcool1->len)) - (elm_str_two >= (maratcool2->len)));
     }
     while (*( (maratcool1->str) + elm_str_one) ==  *( (maratcool2->str) + elm_str_two))
     {
 
         elm_str_one++;
         elm_str_two++;
-        while (!isalpha(*( (maratcool1->str) + elm_str_one)) && (maratcool1->len) > elm_str_one)
+        while (!isalpha(*( (maratcool1->str) + elm_str_one)) && ((maratcool1->len) > elm_str_one))
         {
             elm_str_one++;
         }
-        while (!isalpha(*( (maratcool2->str) + elm_str_two)) && (maratcool2->len) > elm_str_two)
+        while (!isalpha(*( (maratcool2->str) + elm_str_two)) && ((maratcool2->len) > elm_str_two))
         {
             elm_str_two++;
         }
-        if (elm_str_one >= (maratcool1->len) || elm_str_two >= (maratcool2->len))
+        if ((elm_str_one >= (maratcool1->len)) || (elm_str_two >= (maratcool2->len)))
         {
-            return -(elm_str_one >= (maratcool1->len) - elm_str_two >= (maratcool2->len));
+            return -((elm_str_one >= (maratcool1->len)) - (elm_str_two >= (maratcool2->len)));
         }
     }
 
@@ -185,35 +185,37 @@ int compare_end (struct Line *maratcool1, struct Line *maratcool2)
 {
     int elm_str_one = 0, elm_str_two = 0;
 
-    while (!isalpha(*( (maratcool1->str) + (maratcool1->len) - 1 - elm_str_one)) && maratcool1->len > elm_str_one)
+    while (!isalpha(*( (maratcool1->str) + (maratcool1->len) - 1 - elm_str_one)) && (maratcool1->len > elm_str_one))
     {
         elm_str_one++;
     }
-    while (!isalpha(*( (maratcool2->str) + (maratcool2->len) - 1 - elm_str_two)) && maratcool2->len > elm_str_two)
+    while (!isalpha(*( (maratcool2->str) + (maratcool2->len) - 1 - elm_str_two)) && (maratcool2->len > elm_str_two))
     {
         elm_str_two++;
     }
-    if (elm_str_one >= (maratcool1->len) || elm_str_two >= (maratcool2->len))
-        {
-            return -(elm_str_one >= (maratcool1->len) - elm_str_two >= (maratcool2->len));
-        }
+    if ((elm_str_one >= (maratcool1->len) )|| (elm_str_two >= (maratcool2->len)))
+    {
+        return -((elm_str_one >= (maratcool1->len)) - (elm_str_two >= (maratcool2->len)));
+    }
     while ( *( (maratcool1->str) + (maratcool1->len) - 1 - elm_str_one) ==  *( (maratcool2->str) + (maratcool2->len) - 1 - elm_str_two))
     {
 
         elm_str_one++;elm_str_two++;
-        while (!isalpha(*( (maratcool1->str) + (maratcool1->len) - 1 - elm_str_one)) && maratcool1->len > elm_str_one)
+        while (!isalpha(*( (maratcool1->str) + (maratcool1->len) - 1 - elm_str_one)) && (maratcool1->len > elm_str_one))
         {
             elm_str_one++;
         }
-        while (!isalpha(*( (maratcool2->str) + (maratcool2->len) - 1 - elm_str_two)) && maratcool2->len > elm_str_two)
+        while (!isalpha(*( (maratcool2->str) + (maratcool2->len) - 1 - elm_str_two)) && (maratcool2->len > elm_str_two))
         {
             elm_str_two++;
         }
-        if (elm_str_one >= (maratcool1->len) || elm_str_two >= (maratcool2->len))
+        if ((elm_str_one >= (maratcool1->len)) || (elm_str_two >= (maratcool2->len)))
         {
-            return -(elm_str_one >= (maratcool1->len) - elm_str_two >= (maratcool2->len));
+            return -((elm_str_one >= (maratcool1->len)) - (elm_str_two >= (maratcool2->len)));
         }
     }
 
     return *((maratcool1->str) + (maratcool1->len) - 1 - elm_str_one) -  *((maratcool2->str) + (maratcool2->len) - 1 - elm_str_two);
 }
+
+
