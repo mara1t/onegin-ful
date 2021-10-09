@@ -3,47 +3,42 @@
 #include <math.h>
 #include <string.h>
 #include <io.h>
+#include <assert.h>
 #include "header_og.h"
+#include <ctype.h>
 
-/*void caloc_point (int n_str ,int** len_str, char*** first_smb, struct n_len_str** mystr)
-{
-    len_str = (int*) calloc (n_str, sizeof(int));
-    first_smb = (char**) calloc (n_str, sizeof(char*));
-    mystr = (struct n_len_str*) calloc (n_str, sizeof(*mystr));
-}*/
-
-void free_cal(struct n_len_str* mystr, char** first_smb, char *symbols, FILE* file_onegin)
+void free_cal(struct Line* mystr, char *buffer, FILE* file_onegin, FILE* file_output)
 {
     free(mystr);
-    free(first_smb);
-    free(symbols);
+    free(buffer);
+    free(file_output);
     fclose(file_onegin);
 }
 
-void copy_mass (struct n_len_str* mystr, int* len_str, char** first_smb, int n_str)
+/*new_buf(char *buffer, char *new_buffer, int file_size)
 {
-    for (int i_str = 0; i_str < n_str; i_str++)
-        {
-            mystr[i_str].ilen = len_str[i_str];
-            mystr[i_str].ifirst_smb = first_smb[i_str];
-        }
-}
-
-int fl_size (FILE* og)
-{
-    if (og == NULL)
+    for (int symb = 0; symb <= file_size; symb++)
     {
-        printf ("ERROR");
-        return -1;
+        if(!isalpha(buffer[symb]))
+        {
+            symb--;
+            continue;
+        }
+        new_buffer
     }
+}
+*/
+int func_fl_size (FILE* og)
+{
+    assert(og != NULL);
 
     fseek (og, 0, SEEK_END);
 
-    int size = ftell (og);
+    ssize_t size = ftell (og);
 
     fseek (og, 0, SEEK_SET);
 
-    return (size);
+    return size;
 }
 
 void swaping (char** first_smb, int str)
@@ -55,87 +50,170 @@ void swaping (char** first_smb, int str)
 
 char* file_read (int file_size, FILE* og)
 {
-    char* symbols = (char *) calloc(file_size, sizeof(char));
-    if (symbols == NULL)
+    char* buffer = (char *) calloc(file_size + 1, sizeof(char));
+    if (buffer == NULL)
     {
-        printf("ERROR");
-        return -1;
+        printf("ERROR, No free member");
+        return NULL;
     }
+
     else
     {
-        fread(symbols, 1, file_size, og);
-        return symbols;
+        //проверка
+        if (fread (buffer, sizeof(char), file_size, og) == NULL)
+        {
+            printf("ERROR, No symbols in text file");
+            abort();
+        }
+        buffer[file_size] = '\0';
+        return buffer;
     }
 }
 
-void point_str (int file_size, char *symbols, char** first_smb, int* len_str)
+void line_pointer_len (int file_size, char *buffer, struct Line* mystr)
 {
-    int i = 0, j = 0, counter = 0;
-    for (j = 0; i < file_size; j++)
+    // strchr()
+    int symb_counter = 0, str = 0, len_counter = 0;
+    for ( str = 0; symb_counter < file_size; str++)
     {
-        counter = 0;
-        first_smb[j] = &symbols[i];
-        while ( symbols[i] != '\n' && i < file_size)
+        len_counter = 0;
+        mystr[str].str = &buffer[symb_counter];
+        while ( buffer[symb_counter] != '\n' && symb_counter < file_size)
         {
-            i++;
-            counter++;
+            symb_counter++;
+            len_counter++;
         }
-        i++;
-        counter++;
-        len_str[j] = counter;
+        buffer[symb_counter] = '\0';
+        symb_counter++;
+        len_counter++;
+
+        mystr[str].len = len_counter;
     }
 }
 
-int nstr (int file_size, char *symbols)
+int func_nstr (int file_size, char *buffer)
 {
-    int i = 0, n_str = 0, j = 0;
-    for (j = 0; i < file_size; j++)
+    // strchr()
+    int symb_num = 0, n_str = 0, str_num = 0;
+    for (str_num = 0; symb_num < file_size; str_num++)
     {
-        while ( symbols[i] != '\n')
+        while ( buffer[symb_num] != '\n')
         {
-            i++;
+            symb_num++;
         }
-        i++;
+        symb_num++;
     }
-    n_str = j;
+    n_str = str_num;
     return n_str;
 }
 
-void print_txt (int n_str, struct n_len_str *my_str)
+char** get_string(int n_str, FILE* file_onegin)
 {
-    for (int istr = 0; istr < n_str; istr++)
+    char** mystring = (char**) calloc(n_str, 40);
+
+    for(int str = 0; str < n_str; str++)
     {
-        for (int jsymb = 0; *((my_str[istr]. ifirst_smb) + jsymb) != '\n'; jsymb++)
-        {
-            printf("%c", *((my_str[istr]. ifirst_smb) + jsymb));
-        }
-        printf("\n");
+        fgets(mystring[str], 40, file_onegin);
     }
+
+    return mystring;
 }
 
-int compare_begin (struct n_len_str *maratcool1, struct n_len_str *maratcool2)
+void output_txt (FILE* file_output, int n_str, struct Line* mystr)
 {
-    int elm_str = 0;
-
-    while (*( (maratcool1->ifirst_smb) + elm_str) ==  *( (maratcool2->ifirst_smb) + elm_str))
+    /*for (int str_num = 0; str_num < n_str; str_num++)
     {
-        elm_str++;
+        for (int symb_num = 0; *((mystr[str_num]. str) + symb_num) != '\n'; symb_num++)
+        {
+            fprintf(file_output, "%c", *((mystr[str_num]. str) + symb_num));
+        }
+        fprintf(file_output,"\n"); // fputs (file, str);
+    }
+*/
+    for (int str_num = 0; str_num < n_str; str_num++)
+    {
+        fputs(mystr[str_num].str, file_output);
+        fprintf(file_output, "\n");
     }
 
-    return *( (maratcool1->ifirst_smb) + elm_str) - *( (maratcool2->ifirst_smb) + elm_str);
-}
-
-int compare_end (struct n_len_str *maratcool1, struct n_len_str *maratcool2)
-{
-    int elm_str = 0;
-
-    while ( *( (maratcool1->ifirst_smb) + (maratcool1->ilen) - 1 - elm_str) ==  *( (maratcool2->ifirst_smb) + (maratcool2->ilen) - 1 - elm_str))
+    for (int i = 0; i < 40; i++)
     {
-        if (++elm_str == (maratcool1->ilen) || elm_str == (maratcool2->ilen))
+        fprintf(file_output, "*");
+    }
+    fprintf(file_output, "\n");
+
+}
+int compare_begin (struct Line *maratcool1, struct Line *maratcool2)
+{
+    int elm_str_one = 0, elm_str_two = 0;
+
+    while (!isalpha(*( (maratcool1->str) + elm_str_one)) && (maratcool1->len) > elm_str_one)
+    {
+        elm_str_one++;
+    }
+    while (!isalpha(*( (maratcool2->str) + elm_str_two)) && (maratcool2->len) > elm_str_two)
+    {
+        elm_str_two++;
+    }
+    if (elm_str_one >= (maratcool1->len) || elm_str_two >= (maratcool2->len))
+    {
+        return -(elm_str_one >= (maratcool1->len) - elm_str_two >= (maratcool2->len));
+    }
+    while (*( (maratcool1->str) + elm_str_one) ==  *( (maratcool2->str) + elm_str_two))
+    {
+
+        elm_str_one++;
+        elm_str_two++;
+        while (!isalpha(*( (maratcool1->str) + elm_str_one)) && (maratcool1->len) > elm_str_one)
         {
-            return (elm_str == (maratcool1->ilen)) - (elm_str == (maratcool2->ilen));
+            elm_str_one++;
+        }
+        while (!isalpha(*( (maratcool2->str) + elm_str_two)) && (maratcool2->len) > elm_str_two)
+        {
+            elm_str_two++;
+        }
+        if (elm_str_one >= (maratcool1->len) || elm_str_two >= (maratcool2->len))
+        {
+            return -(elm_str_one >= (maratcool1->len) - elm_str_two >= (maratcool2->len));
         }
     }
 
-    return *((maratcool1->ifirst_smb) + (maratcool1->ilen) -1 - elm_str) -  *((maratcool2->ifirst_smb) + (maratcool2->ilen)-1 - elm_str);
+    return *( (maratcool1->str) + elm_str_one) - *( (maratcool2->str) + elm_str_two);
+}
+
+int compare_end (struct Line *maratcool1, struct Line *maratcool2)
+{
+    int elm_str_one = 0, elm_str_two = 0;
+
+    while (!isalpha(*( (maratcool1->str) + (maratcool1->len) - 1 - elm_str_one)) && maratcool1->len > elm_str_one)
+    {
+        elm_str_one++;
+    }
+    while (!isalpha(*( (maratcool2->str) + (maratcool2->len) - 1 - elm_str_two)) && maratcool2->len > elm_str_two)
+    {
+        elm_str_two++;
+    }
+    if (elm_str_one >= (maratcool1->len) || elm_str_two >= (maratcool2->len))
+        {
+            return -(elm_str_one >= (maratcool1->len) - elm_str_two >= (maratcool2->len));
+        }
+    while ( *( (maratcool1->str) + (maratcool1->len) - 1 - elm_str_one) ==  *( (maratcool2->str) + (maratcool2->len) - 1 - elm_str_two))
+    {
+
+        elm_str_one++;elm_str_two++;
+        while (!isalpha(*( (maratcool1->str) + (maratcool1->len) - 1 - elm_str_one)) && maratcool1->len > elm_str_one)
+        {
+            elm_str_one++;
+        }
+        while (!isalpha(*( (maratcool2->str) + (maratcool2->len) - 1 - elm_str_two)) && maratcool2->len > elm_str_two)
+        {
+            elm_str_two++;
+        }
+        if (elm_str_one >= (maratcool1->len) || elm_str_two >= (maratcool2->len))
+        {
+            return -(elm_str_one >= (maratcool1->len) - elm_str_two >= (maratcool2->len));
+        }
+    }
+
+    return *((maratcool1->str) + (maratcool1->len) - 1 - elm_str_one) -  *((maratcool2->str) + (maratcool2->len) - 1 - elm_str_two);
 }
