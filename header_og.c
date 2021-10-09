@@ -15,19 +15,6 @@ void free_cal(struct Line* mystr, char *buffer, FILE* file_onegin, FILE* file_ou
     fclose(file_onegin);
 }
 
-/*new_buf(char *buffer, char *new_buffer, int file_size)
-{
-    for (int symb = 0; symb <= file_size; symb++)
-    {
-        if(!isalpha(buffer[symb]))
-        {
-            symb--;
-            continue;
-        }
-        new_buffer
-    }
-}
-*/
 int func_fl_size (FILE* og)
 {
     assert(og != NULL);
