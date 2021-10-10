@@ -15,7 +15,7 @@ void free_cal(struct Line* mystr, char *buffer, FILE* file_onegin, FILE* file_ou
     fclose(file_onegin);
 }
 
-int func_fl_size (FILE* og)
+int File_size (FILE* og)
 {
     assert(og != NULL);
 
@@ -59,7 +59,7 @@ char* file_read (int file_size, FILE* og)
 
 void line_pointer_len (int file_size, char *buffer, struct Line* mystr)
 {
-    // strchr()
+  
     int symb_counter = 0, str = 0, len_counter = 0;
     for ( str = 0; symb_counter < file_size; str++)
     {
@@ -78,9 +78,9 @@ void line_pointer_len (int file_size, char *buffer, struct Line* mystr)
     }
 }
 
-int func_nstr (int file_size, char *buffer)
+int Nstr (int file_size, char *buffer)
 {
-    // strchr()
+    
     int symb_num = 0, n_str = 0, str_num = 0;
     for (str_num = 0; symb_num < file_size; str_num++)
     {
@@ -108,10 +108,14 @@ char** get_string(int n_str, FILE* file_onegin)
 
 void output_txt (FILE* file_output, int n_str, struct Line* mystr)
 {
+  
     for (int str_num = 0; str_num < n_str; str_num++)
     {
-        fputs(mystr[str_num].str, file_output);
-        fprintf(file_output, "\n");
+        if (*(mystr[str_num].str) != '\0')
+        {
+            fputs(mystr[str_num].str, file_output);
+            fprintf(file_output, "\n");
+        }
     }
 
     for (int i = 0; i < 40; i++)
@@ -141,7 +145,7 @@ int compare_begin (struct Line *stract1, struct Line *stract2)
     {
         elem_num_one++;
         elem_num_two++;
-        
+
         while (!isalpha(*( (stract1->str) + elem_num_one)) && ((stract1->len) > elem_num_one))
         {
             elem_num_one++;
