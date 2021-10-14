@@ -31,7 +31,7 @@ int main()
 
     printf("%s", FINALLY);
 
-    free_cal (mystr, buffer, file_onegin, file_output);
+    free_member (mystr, buffer, file_onegin, file_output);
 
     return 0;
 }
