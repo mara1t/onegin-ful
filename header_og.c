@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include "header_og.h"
-
+#include <ctype.h>
+#include <stdlib.h>
 void free_member(struct Line* mystr, char *buffer, FILE* file_onegin, FILE* file_output) {
 
     free(mystr);
@@ -10,7 +11,7 @@ void free_member(struct Line* mystr, char *buffer, FILE* file_onegin, FILE* file
     fclose(file_onegin);
 }
 
-int File_size (const FILE* og) {
+int File_size (FILE* og) {
 
     assert(og != NULL);
 
@@ -21,7 +22,7 @@ int File_size (const FILE* og) {
     return size;
 }
 
-char* file_read (const int file_size, const FILE* og) {
+char* file_read (const int file_size, FILE* og) {
 
     assert(og != NULL && file_size >= 1);
 
@@ -82,7 +83,7 @@ int Nstr (const int file_size, const char *buffer) {
     return n_str;
 }
 
-void output_txt (const FILE* file_output, const int n_str, const struct Line* mystr) {
+void output_txt (FILE* file_output, const int n_str, const struct Line* mystr) {
 
     assert(file_output != NULL && n_str >= 1 && mystr != NULL);
 
@@ -97,53 +98,53 @@ void output_txt (const FILE* file_output, const int n_str, const struct Line* my
 
     for (int i = 0; i < 40; i++)
         fprintf(file_output, "*");
-
     fprintf(file_output, "\n");
 
 }
-int compare_begin (const struct Line *stract1, const struct Line *stract2) {
+int compare_begin (const void* stract1, const void* stract2) {
 
+    
     int elem_num_one = -1, elem_num_two = -1;
 
-    do {
-
+    do
+    {
         elem_num_one++;
         elem_num_two++;
 
-        while (!isalpha(stract1->str[elem_num_one]) && ((stract1->len) > elem_num_one))
+        while (!isalpha(( (Line*) stract1)->str[elem_num_one]) && (( ( (Line*) stract1)->len) > elem_num_one))
             elem_num_one++;
 
-        while (!isalpha(stract2->str[elem_num_two]) && ((stract2->len) > elem_num_two))
+        while (!isalpha(( (Line*) stract2)->str[elem_num_two]) && ((( (Line*) stract2)->len) > elem_num_two))   //(const struct Line*)
             elem_num_two++;
 
-        if ((elem_num_one >= (stract1->len)) || (elem_num_two >= (stract2->len)))
-            return -(elem_num_one >= (stract1->len)) + (elem_num_two >= (stract2->len));
+        if ((elem_num_one >= (( (Line*) stract1)->len)) || (elem_num_two >= (( (Line*) stract2)->len)))
+            return -(elem_num_one >= (( (Line*) stract1)->len)) + (elem_num_two >= (( (Line*) stract2)->len));
 
-    } while (stract1->str[elem_num_one] ==  stract2->str[elem_num_two]);
+    } while (( (Line*) stract1)->str[elem_num_one] ==  ( (Line*) stract2)->str[elem_num_two]);
 
-    return stract1->str[elem_num_one] - stract2->str[elem_num_two];
+    return ( (Line*) stract1)->str[elem_num_one] - ( (Line*) stract2)->str[elem_num_two];
 }
 
-int compare_end (const struct Line *stract1, const struct Line *stract2) {
+int compare_end (const void* stract1, const void* stract2) {
 
     int elem_num_one = -1, elem_num_two = -1;
 
-    do {
-
+    do
+    {
         elem_num_one++;
         elem_num_two++;
 
-        while (!isalpha(stract1->str[stract1->len - 1 - elem_num_one]) && (stract1->len > elem_num_one))
+        while (!isalpha(( (Line*) stract1)->str[( (Line*) stract1)->len - 1 - elem_num_one]) && (( (Line*) stract1)->len > elem_num_one))
             elem_num_one++;
 
-        while (!isalpha(stract2->str[stract2->len - 1 - elem_num_two]) && (stract2->len > elem_num_two))
+        while (!isalpha(( (Line*) stract2)->str[( (Line*) stract2)->len - 1 - elem_num_two]) && (( (Line*) stract2)->len > elem_num_two))
             elem_num_two++;
 
-        if ((elem_num_one >= (stract1->len)) || (elem_num_two >= (stract2->len)))
-            return -(elem_num_one >= (stract1->len) ) + (elem_num_two >= (stract2->len) );
+        if ((elem_num_one >= (( (Line*) stract1)->len)) || (elem_num_two >= (( (Line*) stract2)->len)))
+            return -(elem_num_one >= (( (Line*) stract1)->len) ) + (elem_num_two >= (( (Line*) stract2)->len) );
 
-    } while ( stract1->str[stract1->len - 1 - elem_num_one] ==  stract2->str[stract2->len - 1 - elem_num_two]);
+    } while ( ( (Line*) stract1)->str[( (Line*) stract1)->len - 1 - elem_num_one] ==  ( (Line*) stract2)->str[( (Line*) stract2)->len - 1 - elem_num_two]);
 
-    return stract1->str[stract1->len - 1 - elem_num_one] -  stract2->str[stract2->len - 1 - elem_num_two];
+    return ( (Line*) stract1)->str[( (Line*) stract1)->len - 1 - elem_num_one] -  ( (Line*) stract2)->str[( (Line*) stract2)->len - 1 - elem_num_two];
 }
 
